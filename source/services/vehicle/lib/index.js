@@ -53,7 +53,13 @@ module.exports.respond = function(event, cb) {
 function processRequest(event, cb) {
 
     // set the claims ticket
-    let _ticket = event.requestContext.authorizer.claims;
+    //let _ticket = event.requestContext.authorizer.claims;
+
+    // Use lambda authorizer to output a context map with "cognito:username" to mimic a request with Cognito as authorizer
+    // The claims is stringified so need to convert back to JSON object
+    // Please check https://github.com/linjungz/authing-lambda-auth for further information
+    
+    let _ticket = JSON.parse(event.requestContext.authorizer.claims);
 
     // catch error if proxied API path sent to service is not processed by available logic
     let INVALID_PATH_ERR = {
