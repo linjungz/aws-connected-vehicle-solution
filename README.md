@@ -6,7 +6,7 @@ This project is to migrate the solution to AWS China Region. As some services su
 ## Getting Started
 To get started with the AWS Connected Vehicle Solution, please review the solution documentation. https://aws.amazon.com/answers/iot/connected-vehicle-solution/
 
-Detail information about deploying this solutuion in AWS China region is documented here. Deploying the solution in AWS Global Region could be checked in this [repo](https://github.com/awslabs/aws-connected-vehicle-solution) form which this project forked.
+Detail information about deploying this solutuion in AWS China region is documented here. Deploying the solution in AWS Global Region could be checked in this [repo](https://github.com/awslabs/aws-connected-vehicle-solution) from which this project forked.
 
 ## TODO: Instructions on deploying in AWS China Region 
 
