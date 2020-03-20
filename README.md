@@ -6,19 +6,19 @@ This project is to migrate the solution to AWS China Region. As some services su
 ## Getting Started
 To get started with the AWS Connected Vehicle Solution, please review the solution documentation. https://aws.amazon.com/answers/iot/connected-vehicle-solution/
 
-Detailed  information about deploying this solutuion in AWS China region is documented here. Deploying the solution in AWS Global Region could be checked in this [repo](https://github.com/awslabs/aws-connected-vehicle-solution) from which this project forked.
+Detailed information about deploying this solutuion in AWS China region is documented here. Deploying the solution in AWS Global Region could be checked in this [repo](https://github.com/awslabs/aws-connected-vehicle-solution) from which this project forked.
 
 ## Instructions on deployment in AWS China Region 
 
 ### 1. Deploy Connected Vehicle Solution ( without authorizer for API Gateway )
 
-Use following link to deploy the solution with a modified Cloudformation template. Currently only Beijing Region(cn-north-1) is supported. We will support Ningxia Region as well when the the solution is finalized.
+Use following link to deploy the solution with a modified Cloudformation template. Currently only Beijing Region(cn-north-1) is supported. Ningxia Region will be supported as well when the solution is finalized.
 
 [![](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.amazonaws.cn/cloudformation/home?region=cn-north-1#/stacks/quickcreate?templateUrl=https%3A%2F%2Flinjungz-cvra2cn-cn-north-1.s3.cn-north-1.amazonaws.com.cn%2Faws-connected-vehicle-solution-cn.template&stackName=CVRA2-cn)
 
-You coudld find the template [here](deployment/aws-connected-vehicle-solution-cn.template).
+You could find the template [here](deployment/aws-connected-vehicle-solution-cn.template).
 
-### 2. Deploy a Lambda Authorizer for API Gateway using Authing.cn
+### 2. Deploy a Lambda Authorizer for API Gateway using Authing
 
 //TODO: Working to change it to a Cloudformation template for easier deployment.
 
@@ -31,11 +31,11 @@ If you choose other authentication service such as Auth0, you need to rewrite th
 
 In AWS Console locate the API Gateway "Vehicle Services API" that's created in Step 1 and [create a lambda authorizer](https://docs.aws.amazon.com/apigateway/latest/developerguide/configure-api-gateway-lambda-authorization-with-console.html). Create a lambda authorizer which would use the Lambda function we created in Step 2.1. Here's the configuration:
 
-![create a lambda authorizer](pic/create_authorizer.jpg)
+![create a lambda authorizer](pic/create_authorizer.jpg | width=48)
 
 And change each Method Request to use the Lambda authorizer: 
 
-![change method request](pic/change_method_request.jpg)
+![change method request](pic/change_method_request.jpg | width=24)
 
 #### 2.3 Change APP Secret for Authing.cn
 
