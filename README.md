@@ -31,11 +31,11 @@ If you choose other authentication service such as Auth0, you need to rewrite th
 
 In AWS Console locate the API Gateway "Vehicle Services API" that's created in Step 1 and [create a lambda authorizer](https://docs.aws.amazon.com/apigateway/latest/developerguide/configure-api-gateway-lambda-authorization-with-console.html). Create a lambda authorizer which would use the Lambda function we created in Step 2.1. Here's the configuration:
 
-![create a lambda authorizer](pic/create_authorizer.jpg | width=48)
+<img src="pic/create_authorizer.jpg" width=200 align=center>
 
 And change each Method Request to use the Lambda authorizer: 
 
-![change method request](pic/change_method_request.jpg | width=24)
+<img src="pic/change_method_request.jpg" width=200 align=center>
 
 #### 2.3 Change APP Secret for Authing.cn
 
