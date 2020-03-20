@@ -41,9 +41,6 @@ Authing.cn is ID as a service which I leverage as a authorization service and JW
 
 App Secret is stored in Lambda function environment varaible and you could change it to your app secret for Authing.
 
-*Still Working to change this step into the Cloudformation template for one-click deployment.*
-
-
 ## 3. Testing Vehicle Service API
 
 ### 3.1 Authenticate using Authing.cn and Get JWT Token
@@ -86,6 +83,10 @@ Here is the response:
 {"Items":[{"nickname":"car1","vin":"vin1","owner_id":"test"},{"nickname":"car2","vin":"vin2","owner_id":"test"}],"Count":2,"ScannedCount":2}%
 ```
 
-*Still working on a simple web page for demostrating vehicle service API*
+
+## Todo
+
+- Create a simple web page for demostrating vehicle service API including login and logout from Authing
+- Change Step 2 into the Cloudformation template for one-click deployment
 
 ***
