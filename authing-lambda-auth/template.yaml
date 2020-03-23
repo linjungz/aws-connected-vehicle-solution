@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  authing-lambda-auth
+
+  Sample SAM Template for authing-lambda-auth
+  
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 5
+
+Resources:
+  AuthFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src/
+      Handler: app.handler
+      Runtime: nodejs12.x
+      Environment: 
+        Variables: 
+          authingOIDCAppSecret: 4f16ace7108097af537c70c7f705c3a7 #从Authing.cn控制台获取OIDC应用的App Secret并存入在Lambda环境变量中
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  AuthFunction:
+    Description: "Authing Lambda Auth Function ARN"
+    Value: !GetAtt AuthFunction.Arn
+
