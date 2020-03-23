@@ -68,6 +68,8 @@ OIDC App Secret 保存在了 Lambda 函数的环境变量 authingOIDCAppSecret �
 
 <img src="pic/web.jpg" width=400 align=center>
 
+*注意：为了演示网站可以正常发送请求至API Gateway, 需要启用API Gateway CORS的支持，具体可以参考这个[文档](https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-cors.html)*
+
 ### 2. 通过curl/Postman进行接口调用测试
 
 通过演示网站页面上提供的Token，方便用户使用常用的Postman或curl工具来进行调试。如下是使用curl进行接口调用的演示：
