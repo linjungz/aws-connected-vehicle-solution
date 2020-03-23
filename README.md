@@ -59,15 +59,15 @@ AWS Connected Vehicle Solution是通过一个Cloudformation模板一键就可以
 
 OIDC App Secret 保存在了 Lambda 函数的环境变量 authingOIDCAppSecret 中。
 
-### 3. 测试车联网业务接口 (Vehicle Service API)
+## 测试车联网业务接口 (Vehicle Service API)
 
-#### 通过演示网站进行接口调用测试
+### 通过演示网站进行接口调用测试
 
 为方便进行接口调用演示，可部署本项目中附带的[演示网站](web-api-demo/README.md)。这是一个静态文件可直接托管在Amazon S3中，集成了Authing的登陆认证，获取token后直接在Web页面上可进行接口调用，方便接口的调试和演示。
 
 <img src="pic/web.jpg" width=400 align=center>
 
-#### 通过curl/Postman进行接口调用测试
+### 通过curl/Postman进行接口调用测试
 
 通过演示网站页面上提供的Token，方便用户使用常用的Postman或curl工具来进行调试。如下是使用curl进行接口调用的演示：
 
@@ -90,7 +90,7 @@ $ curl -H "Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZTczZm
 {"Items":[{"nickname":"car1","vin":"vin1","owner_id":"test"},{"nickname":"car2","vin":"vin2","owner_id":"test"}],"Count":2,"ScannedCount":2}%
 ```
 
-#### 在 API Gateway 中校验 JWT 
+### 在 API Gateway 中校验 JWT 
 
 通过演示网站页面上的Token，在 API Gateway 中对 Lambda Authorizer进行测试
 <img src="pic/test_token.jpg" width=400 align=center>
