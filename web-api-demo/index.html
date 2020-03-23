@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<title>AWS车联网解决方案接口调用演示</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/w3.css">
+<body>
+<!-- Navbar (sit on top) -->
+<div class="w3-top" id="topDiv" >
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <a class="w3-bar-item w3-button">AWS车联网解决方案接口调用演示</a>
+    <!-- Float links to the right. Hide them on small screens -->
+    <div class="w3-right w3-hide-small">
+      <a class="w3-bar-item w3-button" id="userName" style="display:none">用户信息</a>
+      <a class="w3-bar-item w3-button" id="logout-btn" style="display:none">退出登陆</a>
+      <a class="w3-bar-item w3-button" id="contactus">联系我们</a>
+    </div>
+  </div>
+</div>
+
+<!-- Page content -->
+<div  class="w3-display-middle w3-center" style="max-width:800px" id="frontDiv">
+  <div  id="contact" class="w3-display-middle w3-margin-top w3-center"></div>
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16" >车联网解决方案整体架构图(部署在AWS国内区域)</h3>
+     <img src=imgs/architecture.jpg width=800>
+     <button class="w3-button w3-black w3-section" id="login-btn" type="submit">
+      <span class="w3-padding w3-black w3-opacity-min"><b>请登陆以进行接口调用演示</b></span> 
+      </button>
+     
+  </div>
+</div>
+
+<!-- Page content -->
+<div class="w3-content w3-padding" style="max-width:800px;display:none" id="demoDiv">
+
+  <!-- Contact Section -->
+  <div class="w3-container w3-padding-32" id="contact">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16" >车联网解决方案整体架构图(部署在AWS国内区域)</h3>
+     <img src=imgs/architecture.jpg width=800>
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">简易接口调用演示</h3>
+    <p>API Gateway URL</p>
+    <input class="w3-input w3-border w3-round" type="text" id="urlText">
+    
+    <p>方法：</p>
+    <input class="w3-radio" type="radio" name="method" value="Get" id="methodGet" checked>
+        <label>GET</label>
+    <input class="w3-radio" type="radio" name="method" value="Post" id="methodPost">
+        <label>POST</label>
+    
+    <p>接口：</p>
+    <input class="w3-input w3-border w3-round" type="text" id="apiText" value="/vehicles">
+
+    <p>请求内容：</p>
+    <textarea rows="5" class="w3-input w3-border w3-round" id="bodyText"></textarea>
+
+    <p>可点击以下示例请求进行演示<a href="https://docs.aws.amazon.com/solutions/latest/connected-vehicle-solution/appendix.html">(详细接口定义与说明可参考官方文档)</a></p>
+    <ul>
+      <li><a class="w3-button" id="reqGetVehicles">查询所有车辆信息: GET /vehicles</a></li>
+      <li><a class="w3-button" id="reqPostVehicles">注册新的车辆：POST /vehicles</a></li>
+      <li><a class="w3-button" id="reqGetVehiclesVin">查询某部车的信息：GET /vehicles/{vin}</a></li>
+      <li><a class="w3-button" id="reqGetVehiclesVinAnormalies">查询某部车的异常信息：GET /vehicles/{vin}/anomalies</a></li>
+      <li><a class="w3-button" id="reqGetVehiclesVinDTCs">查询某部车的DTC：GET /vehicles/{vin}/dtc</a></li>
+      <li><a class="w3-button" id="reqGetVehiclesVinHealthReports">查询某部车的健康报告：GET /vehicles/{vin}/healthreports</a></li>
+      <li><a class="w3-button" id="reqGetVehiclesVinTrips">查询某部车的行程记录：GET /vehicles/{vin}/trips</a></li>
+    </ul>
+    <button class="w3-button w3-black w3-section" id="submit-btn" type="submit">
+        <i class="fa fa-paper-plane"></i> 发送调用请求
+      </button>
+
+    <p>返回内容：</p>
+    <textarea class="w3-input w3-border w3-round" id="responseText"></textarea>
+
+  </div>
+
+  <!-- Invoke  -->
+  <div class="w3-container w3-padding-16" id="invoke">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">接口调用方法</h3>
+    <p>AWS车联网解决方案通过AWS API Gateway对外暴露接口，需要经过用户认证后才可进行接口调用。在这个演示环境里我们集成了Authing.cn来进行用户认证，并获得相应的Token来进行接口调用。用户可以通过curl/Postman并在header中带上以下Token以进行接口调用</p>
+    <p><b>Token:</b></p>
+    <textarea  id="tokenText" rows=5 cols=80 ></textarea>
+    <p></p>
+  </div>
+  
+  <!-- Description -->
+  <div class="w3-container w3-padding-32" id="description">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">接口定义与说明</h3>
+    <p>请参阅<a href=https://docs.aws.amazon.com/solutions/latest/connected-vehicle-solution/appendix.html>AWS官方文档</a>以了解车联网解决方案接口的定义与详细说明</p>
+  </div>
+
+
+<!-- End page content -->
+</div>
+
+
+<!-- Footer -->
+<footer class="w3-center w3-black w3-padding-small" id="footerDiv" style="display:none">
+  <p>Made with <span style="color: #e25555;">&#9829;</span> in AWS</p>
+</footer>
+
+<script src="scripts/jquery.js"></script>
+<script src="scripts/axios.min.js"></script>
+<script>
+  const app_id = "5e73faf67f905cbef09a1bb0" ;
+  const app_secret = "4f16ace7108097af537c70c7f705c3a7" ;
+  const app_url = "cvra-cn-demo" ;
+  const redirect_url = "http://linjungz-cvra-api-demo.s3-website.cn-north-1.amazonaws.com.cn/";
+  //const redirect_url = "http://127.0.0.1:8080";
+  const authing_oidc_login_url = `https://${app_url}.authing.cn/oauth/oidc/auth?client_id=${app_id}&redirect_uri=${redirect_url}&scope=openid profile offline_access&response_type=code&prompt=consent&state=235345`;
+  const authing_oidc_token_url = `https://${app_url}.authing.cn/oauth/oidc/token`;
+  const authing_oidc_logout_url = `https://${app_url}.authing.cn/login/profile/logout?app_id=${app_id}&redirect_uri=${redirect_url}`;
+  const apigw_url = "https://5cptaoe3of.execute-api.cn-north-1.amazonaws.com.cn/prod"
+  
+  console.log(authing_oidc_login_url);
+
+  $("#login-btn").click( async function() {
+    console.log("Start login");
+    location.href = authing_oidc_login_url;
+  });
+
+  async function exchangeToken(authorization_code) {
+    console.log('Start exchange token: ' + authorization_code);
+    let response ;
+    try {
+      response = await axios.post(authing_oidc_token_url, 
+      $.param({
+        "client_id" : app_id,
+        "client_secret" : app_secret,
+        "grant_type" : "authorization_code",
+        "redirect_uri" : redirect_url,
+        "code" : authorization_code 
+      }),
+      {
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded"
+        }
+      });
+      console.log(response.data);
+      localStorage.setItem('id_token',response.data['id_token']);
+      loginStatus();
+
+    } catch( error ) {
+      console.log(error.data);
+    }
+  };
+
+  $("#logout-btn").click( async function() {
+    console.log("Start logout");
+    location.href = authing_oidc_logout_url;
+    
+  });
+
+  //API GW请求提交
+  $("#submit-btn").click( async function() {
+    console.log("Start submit request");
+    console.log($("#bodyText").val());
+
+    config = {
+      method: $('input[name="method"]:checked').val(),
+      url: apigw_url + $("#apiText").val(),
+      headers: {
+        'Authorization': localStorage.getItem('id_token')
+      },
+      data: JSON.parse($("#bodyText").val())
+    }
+    
+    axios(config)
+      .then(function (response) {
+        $("#responseText").html(JSON.stringify(response.data, undefined,4));
+      })
+      .catch(error => {
+        console.log(error);
+        $("#responseText").html(JSON.stringify(error.response.data.error.message, undefined,4));
+      });
+
+  });
+
+  const loginStatus = () => {
+        $('#demoDiv').show();
+        $('#headerDiv').show();
+        $('#footerDiv').show();
+        $('#userName').show();
+        $('#logout-btn').show();
+        $('#login-btn').hide();
+        $('#frontDiv').hide();
+        $('#userName').html(localStorage.getItem('userName'));
+        $('#tokenText').html(localStorage.getItem('id_token'));
+        $('#urlText').html=apigw_url;
+        $('#bodyText').val('{}');
+        $('#urlText').val(apigw_url);
+
+  }
+
+  const logoutStatus = () => {
+        $('#demoDiv').hide();
+        $('#headerDiv').hide();
+        $('#footerDiv').hide();
+        $('#userName').hide();
+        $('#logout-btn').hide();
+        $('#login-btn').show();
+        $('#frontDiv').show();
+
+  }
+
+
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const authorization_code = urlParams.get("code");
+  if (authorization_code) {
+    console.log('Get authorization code: ' + authorization_code);
+    exchangeToken(authorization_code);
+  }
+  else {
+    console.log('no code!');
+    logoutStatus();
+  }
+
+  //示例请求点击事件
+  $("#reqGetVehicles").click( function() {
+    console.log("click");
+    $('input[value=Get]').prop('checked', true)
+    $("#apiText").val("/vehicles")
+    $("#bodyText").val("{}");
+    $("#urlText").val(apigw_url);
+  });
+
+  $("#reqPostVehicles").click( function() {
+    console.log("click");
+    $('input[value=Post]').prop('checked', true)
+    $("#apiText").val("/vehicles")
+
+    var nicknames = ["Marquis", "Samir", "Adrien", "Joyce", "Pierce", "Juliette", "Kelton", "Jacob", "Isiah", "Lindsay", "Kian", "Jordyn", "Jaquan", "Anya", "Wayne", "Khalil"];
+
+    vehicle = {
+      "vin" : String(Math.random() * 100000),
+      "nickname" : nicknames[Math.floor(Math.random()*nicknames.length)]
+    }
+    $("#bodyText").val(JSON.stringify(vehicle,undefined,4));
+    $("#urlText").val(apigw_url);
+  });
+
+  $("#reqGetVehiclesVin").click( function() {
+    console.log("click");
+    $('input[value=Get]').prop('checked', true)
+    $("#apiText").val("/vehicles/{vin}")
+    $("#bodyText").val("{}");
+    $("#urlText").val(apigw_url);
+  });
+
+  $("#reqGetVehiclesVinAnormalies").click( function() {
+    console.log("click");
+    $('input[value=Get]').prop('checked', true)
+    $("#apiText").val("/vehicles/{vin}/anomalies")
+    $("#bodyText").val("{}");
+    $("#urlText").val(apigw_url);
+  });
+
+  $("#reqGetVehiclesVinDTCs").click( function() {
+    console.log("click");
+    $('input[value=Get]').prop('checked', true)
+    $("#apiText").val("/vehicles/{vin}/dtc")
+    $("#bodyText").val("{}");
+    $("#urlText").val(apigw_url);
+  });
+
+  $("#reqGetVehiclesVinHealthReports").click( function() {
+    console.log("click");
+    $('input[value=Get]').prop('checked', true)
+    $("#apiText").val("/vehicles/{vin}/healthreports")
+    $("#bodyText").val("{}");
+    $("#urlText").val(apigw_url);
+  });
+
+  $("#reqGetVehiclesVinTrips").click( function() {
+    console.log("click");
+    $('input[value=Get]').prop('checked', true)
+    $("#apiText").val("/vehicles/{vin}/trips")
+    $("#bodyText").val("{}");
+    $("#urlText").val(apigw_url);
+  });
+  
+</script>
+
+
+</body>
+</html>
