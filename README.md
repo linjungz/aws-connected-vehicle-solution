@@ -41,7 +41,7 @@ AWS Connected Vehicle Solution是通过一个Cloudformation模板一键就可以
 
 通过修改这个Lambda Authorizer，用户可以对接其他的认证服务如Auth0等。AWS官方文档提供了Lambda Authorizer的[示例代码](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html)。
 
-#### 在 API Gateway 中配置 Lambda Authorizer
+#### 2.1 在 API Gateway 中配置 Lambda Authorizer
 
 在AWS控制台中找到第一步创建的API ("Vehicle Services API"), 并[创建一个Lambda Authorizer](https://docs.aws.amazon.com/apigateway/latest/developerguide/configure-api-gateway-lambda-authorization-with-console.html)，选择刚才部署的Lambda函数，具体配置如下示：
 
@@ -51,23 +51,24 @@ AWS Connected Vehicle Solution是通过一个Cloudformation模板一键就可以
 
 <img src="pic/change_method_request.jpg" width=400 align=center>
 
-#### 创建Authing帐号和OIDC应用
+#### 2.2 创建Authing帐号和OIDC应用
 
 参考关于 [Authing 配置](https://blog.csdn.net/chidongzhou7494/article/details/101003055) 和 [OIDC](https://authing.cn/blog/5-%E5%88%86%E9%92%9F%E7%90%86%E8%A7%A3%E4%BB%80%E4%B9%88%E6%98%AF-OIDC/) 的链接，创建Authing帐号和OIDC应用。
 
-#### 修改 Lambda Authorizer 中使用的 OIDC APP Secret 
+#### 2.3 修改 Lambda Authorizer 中使用的 OIDC APP Secret 
 
 OIDC App Secret 保存在了 Lambda 函数的环境变量 authingOIDCAppSecret 中。
 
-## 测试车联网业务接口 (Vehicle Service API)
 
-### 通过演示网站进行接口调用测试
+## 测试方法
+
+### 1. 通过演示网站进行接口调用测试
 
 为方便进行接口调用演示，可部署本项目中附带的[演示网站](web-api-demo/README.md)。这是一个静态文件可直接托管在Amazon S3中，集成了Authing的登陆认证，获取token后直接在Web页面上可进行接口调用，方便接口的调试和演示。
 
 <img src="pic/web.jpg" width=400 align=center>
 
-### 通过curl/Postman进行接口调用测试
+### 2. 通过curl/Postman进行接口调用测试
 
 通过演示网站页面上提供的Token，方便用户使用常用的Postman或curl工具来进行调试。如下是使用curl进行接口调用的演示：
 
@@ -90,7 +91,7 @@ $ curl -H "Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZTczZm
 {"Items":[{"nickname":"car1","vin":"vin1","owner_id":"test"},{"nickname":"car2","vin":"vin2","owner_id":"test"}],"Count":2,"ScannedCount":2}%
 ```
 
-### 在 API Gateway 中校验 JWT 
+### 3. 在 API Gateway 中校验 JWT 
 
 通过演示网站页面上的Token，在 API Gateway 中对 Lambda Authorizer进行测试
 <img src="pic/test_token.jpg" width=400 align=center>
