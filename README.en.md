@@ -11,7 +11,7 @@ Detailed information about deploying this solutuion in AWS China region is docum
 
 ## Architecture
 
-<img src="pics/architecture_en.jpg" width=800 align=center>
+<img src="pic/architecture_en.jpg" width=800 align=center>
 
 ## Instructions on Deployment in AWS China Region 
 
