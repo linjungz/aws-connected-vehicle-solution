@@ -5,10 +5,13 @@ The AWS Connected Vehicle Solution is a reference implementation that provides a
 
 This project is to migrate the solution to AWS China Region. As some services such as AWS Cognito, Kinesis Analytics are not available in China region, this project will remove the dependancy on these serives and use 3rd party solutions (either open source or SaaS) to replace them. For exmaple, [Authing.cn](https://authing.cn) is leveraged to replace AWS Cognito user pool, for demo purpose. Note that this solution is not tighted to Authing and you may choose [Auth0](https://auth0.com) or other authentication service you like.
 
-## Getting Started
 To get started with the AWS Connected Vehicle Solution, please review the solution documentation. https://aws.amazon.com/answers/iot/connected-vehicle-solution/
 
 Detailed information about deploying this solutuion in AWS China region is documented here. Deploying the solution in AWS Global Region could be checked in this [repo](https://github.com/awslabs/aws-connected-vehicle-solution) from which this project forked.
+
+## Architecture
+
+<img src="pics/architecture_en.jpg" width=800 align=center>
 
 ## Instructions on Deployment in AWS China Region 
 
@@ -43,25 +46,17 @@ Authing.cn is ID as a service which I leverage as a authorization service and JW
 
 App Secret is stored in Lambda function environment varaible and you could change it to your app secret for Authing.
 
-## 3. Testing Vehicle Service API
+## Testing Vehicle Service API
 
-### 3.1 Authenticate using Authing.cn and Get JWT Token
+### 1. Using API Demo Website
 
-Log in to Authing.cn to get JWT token. You may use [this link](https://cvra-cn-demo.authing.cn/oauth/oidc/auth?client_id=5e73faf67f905cbef09a1bb0&redirect_uri=https://authing.cn/guide/oidc/callback&scope=openid%20profile&response_type=id_token%20token&state=jacket ) for demostration purpose without creating a Authing account. ([Contact me](mailto:linjungz@amazon.com) for username and password)
+In order to demostrate the API invocation, you could leverage a [demo website](web-api-demo/README.md) hosted in S3. It's integrated with Authing SSO and you could ge the JWT and invoke the API directly.
 
-The redirect url shown in the browser address bar contains the JWT token(id_token). Save it for furture API request as a token. Kindly check [this link](https://docs.authing.cn/authing/advanced/verify-jwt-token) for further information.
+<img src="pic/web.jpg" width=400 align=center>
 
-### 3.2 [Optional] Validate JWT Token in API Gateway
+*API Gateway CORS should be enabled for the website to work. Check [this doc](https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-cors.html)*
 
-As a test, you could validate the JWT token in API Gateway:
-
-<img src="pic/test_token.jpg" width=400 align=center>
-
-If the token is valid, you would get a 200 response and policy document which would allow API Gateway to invoke the lambda function for vehicle service.
-
-<img src="pic/token_valid.jpg" width=400 align=center>
-
-### 3.3 Use curl to Send Request to API Gateway
+### 2 Use curl to Send Request to API Gateway
 
 As token is needed for API request authorization, you would need curl to send the request with token in header to API Gateway. 
 
@@ -75,7 +70,7 @@ Here is the response:
 {"vin":"vin2","nickname":"car2","owner_id":"test"}%
 ```
 
-And send a PUT reqeust to retrieve all the vehicles information:
+And send a GET reqeust to retrieve all the vehicles information:
 
 ```shell
 $ curl -H "Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZTczZmI5...Very...Long...Token...loqbEvh29E" https://5cptaoe3of.execute-api.cn-north-1.amazonaws.com.cn/prod/vehicles
@@ -85,10 +80,15 @@ Here is the response:
 {"Items":[{"nickname":"car1","vin":"vin1","owner_id":"test"},{"nickname":"car2","vin":"vin2","owner_id":"test"}],"Count":2,"ScannedCount":2}%
 ```
 
+### 3 [Optional] Validate JWT in API Gateway
 
-## Todo
+As a test, you could validate the JWT token in API Gateway:
 
-- Create a simple web page for demostrating vehicle service API including login and logout from Authing
-- Change Step 2 into the Cloudformation template for one-click deployment
+<img src="pic/test_token.jpg" width=400 align=center>
 
-***`
+If the token is valid, you would get a 200 response and policy document which would allow API Gateway to invoke the lambda function for vehicle service.
+
+<img src="pic/token_valid.jpg" width=400 align=center>
+
+
+***

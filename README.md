@@ -7,7 +7,7 @@
 
 ## 整体架构
 
-<img src="pic/architecture.jpg" width=800 align=center>
+<img src="web-api-demo/imgs/architecture.jpg" width=800 align=center>
 
 解决方案如下几部分组成：
 - 车辆端: 部署 AWS IoT SDK/Greengrass 接入 AWS IoT ，车辆可以通过 AWS IoT JITR 机制进行即时注册接入车辆网
