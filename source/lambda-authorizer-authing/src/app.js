@@ -21,9 +21,10 @@ exports.handler =  function(event, context, callback) {
          * 对claims的处理是为了兼容后端Lambda代码使用requestContext中cognito相关的值
          * CVRA的Lambda Function预设验证机制是通过Cognito，因此代码中会通过claims来获取Cognito用户名等
          * 通过模拟Cognito验证后API Gateway发给Lambda的请求，以尽可能减少对CVRA后端代码的修改
+         * 原CVRA使用cognito username为唯一值，需要对应Authing的_id
          */
         const claims = {
-                "cognito:username": decoded.username
+                "cognito:username": decoded._id
         }
 
         const expired = (Date.parse(new Date()) / 1000) > decoded.exp
