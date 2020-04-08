@@ -105,3 +105,10 @@ $ curl -H "Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZTczZm
 
 
 ***
+
+## 清理
+1. 删除由 CloudFormation Stack 创建的S3桶
+TelemetricDataBucket: connected-vehicle-data-${AWS::Region}-${AWS::AccountId}
+TelemetricTripDataBucket: connected-vehicle-trip-${AWS::Region}-${AWS::AccountId}
+
+2. 删除 CloudFormation Stack
